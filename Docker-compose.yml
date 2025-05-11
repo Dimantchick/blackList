@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   bl-service:
-    image: ozonbot.cr.cloud.ru/bot-service:${VERSION}
+    image: ghcr.io/dimantchick/blacklist:latest
     container_name: bl-service
     restart: always
     labels:
@@ -12,6 +12,8 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8090:8080"
     healthcheck:
       test: curl -m 5 --silent --fail --request GET http://localhost:8081/actuator/health | jq --exit-status -n 'inputs | if has("status") then .status=="UP" else false end' > /dev/null || exit 1
       start_period: 20s
@@ -26,7 +28,7 @@ services:
         max-size: "20m"
         max-file: "5"
     depends_on:
-      ozonbot-postgres:
+      bl-postgres:
         condition: service_healthy
   bl-postgres:
     image: library/postgres:latest
