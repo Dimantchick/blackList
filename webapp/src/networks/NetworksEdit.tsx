@@ -1,15 +1,4 @@
-import {
-    Edit,
-    SimpleForm,
-
-        TextInput,    
-    
-        BooleanInput,
-        DateInput,    
-    
-
-
-} from 'react-admin';
+import {BooleanInput, Edit, SimpleForm, TextInput,} from 'react-admin';
 
 
 export const NetworksEdit = () => {
@@ -40,7 +29,7 @@ export const NetworksEdit = () => {
                 disabled
                 label="Имортированная"
                 />
-                <DateInput
+                <TextInput
                 source='updated'
                 disabled
                 />

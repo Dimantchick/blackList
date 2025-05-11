@@ -2,7 +2,6 @@ import {
     BooleanField,
     BooleanInput,
     Datagrid,
-    DateField,
     List,
     NumberField,
     Pagination,
@@ -43,7 +42,7 @@ export const NetworksList = () => {
                 source="imported"
                 label="Имортированная"
                 />
-                <DateField
+                <TextField
                 source='updated'
                 />
             </Datagrid>
