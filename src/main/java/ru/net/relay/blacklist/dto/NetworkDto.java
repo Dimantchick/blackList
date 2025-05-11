@@ -15,4 +15,5 @@ public class NetworkDto {
     Long id;
     boolean imported;
     LocalDateTime updated;
+    String comment;
 }

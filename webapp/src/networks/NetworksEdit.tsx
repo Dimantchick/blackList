@@ -22,6 +22,11 @@ export const NetworksEdit = () => {
                 required
                 label="Адрес/Сеть"
                 />
+                <TextInput
+                    source="comment"
+                    defaultValue={""}
+                    parse={value => value === null ? "" : value}
+                />
                 <BooleanInput 
                 source="manual"
                 label="Добавлена вручную"

@@ -33,6 +33,10 @@ public class Network {
     @Builder.Default
     private Boolean imported = false;
 
+    @Builder.Default
+    @Column(nullable = false, columnDefinition = "TEXT DEFAULT ''")
+    private String comment = "";
+
     @ToString.Exclude
     @Column(name = "updated")
     private LocalDateTime updated;

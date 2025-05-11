@@ -28,6 +28,9 @@ export const NetworksList = () => {
                 source="network"
                 label="Адрес/Сеть"
                 />
+                <TextField
+                    source="comment"
+                />
                 <BooleanField 
                 source="manual"
                 label="Добавлена вручную"
