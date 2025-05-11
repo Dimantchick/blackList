@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.github.node-gradle.node' version '7.0.1'
+}
+
+group = 'ru.net.relay.blacklist'
+version = '0.0.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.4'
+
+    runtimeOnly 'com.h2database:h2'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.mapstruct:mapstruct:1.6.0'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+node {
+    version = '20.16.0'
+    npmVersion = '10.8.1'
+    download = true
+    workDir = file("${project.projectDir}/webapp/.gradle/nodejs")
+    npmWorkDir = file("${project.projectDir}/webapp/.gradle/npm")
+}
+
+tasks.register('npmBuild', NpmTask) {
+    workingDir = file("${project.projectDir}/webapp")
+    args = ['run', 'build']
+}
+
+tasks.register('copyFrontendToResources', Copy) {
+    from "${project.projectDir}/webapp/dist"
+    into "${project.projectDir}/src/main/resources/static"
+}
+
+npmBuild.dependsOn npmInstall
+copyFrontendToResources.dependsOn npmBuild
+processResources.dependsOn copyFrontendToResources
