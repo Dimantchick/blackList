@@ -1,0 +1,67 @@
+version: "3.9"
+services:
+  bl-service:
+    image: ozonbot.cr.cloud.ru/bot-service:${VERSION}
+    container_name: bl-service
+    restart: always
+    labels:
+      - "autoheal=true"
+    environment:
+      DB_DRIVER: org.postgresql.Driver
+      DB_URL: jdbc:postgresql://bl-postgres:5432/${DB}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    healthcheck:
+      test: curl -m 5 --silent --fail --request GET http://localhost:8081/actuator/health | jq --exit-status -n 'inputs | if has("status") then .status=="UP" else false end' > /dev/null || exit 1
+      start_period: 20s
+      interval: 30s
+      retries: 10
+      timeout: 5s
+    networks:
+      - blacklist
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+    depends_on:
+      ozonbot-postgres:
+        condition: service_healthy
+  bl-postgres:
+    image: library/postgres:latest
+    container_name: bl-postgres
+    restart: always
+    labels:
+      - "autoheal=true"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB}
+    healthcheck:
+      test: pg_isready -d postgres -U ${DB_USER}
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 25s
+    volumes:
+      - blacklist_postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+    networks:
+      - blacklist
+
+
+volumes:
+  blacklist_postgres_data:
+    name: blacklist_postgres_data
+networks:
+  blacklist:
+    driver: bridge
