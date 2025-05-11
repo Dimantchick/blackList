@@ -2,7 +2,6 @@ package ru.net.relay.blacklist.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
@@ -40,7 +39,6 @@ public class RuBlackListService {
     }
 
     public List<String> retrieveBlacklist() {
-        return restClient.get().uri("/api/v3/ips").retrieve().body(new ParameterizedTypeReference<>() {
-        });
+        return List.of(restClient.get().uri("/list/allyouneed.lst").retrieve().body(String.class).split("\n"));
     }
 }

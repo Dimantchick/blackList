@@ -16,7 +16,7 @@ public class RestClientConfig {
 
         return RestClient.builder()
                 .requestFactory(httpComponentsClientHttpRequestFactory)
-                .baseUrl("https://reestr.rublacklist.net")
+                .baseUrl("https://antifilter.download")
                 .build();
     }
 }

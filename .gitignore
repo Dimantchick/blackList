@@ -42,3 +42,4 @@ bin/
 .DS_Store
 /relayDB.mv.db
 /src/main/resources/static/
+/relayDB.trace.db

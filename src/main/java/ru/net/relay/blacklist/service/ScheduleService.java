@@ -22,15 +22,15 @@ public class ScheduleService {
 
     @Scheduled(cron = "0 0 * * * *")
     public void updateBlackList() {
-        try {
-            long start = System.currentTimeMillis();
-            log.info("Обновление блэклиста");
-            ruBlackListService.updateBlackList();
-            long took = System.currentTimeMillis() - start;
-            log.info("Обновление блэклиста заняло {} сек.", took / 1000);
-        } catch (Exception e) {
-            log.error("Ошибка обновления блэклиста", e);
-        }
+//        try {
+//            long start = System.currentTimeMillis();
+//            log.info("Обновление блэклиста");
+//            ruBlackListService.updateBlackList();
+//            long took = System.currentTimeMillis() - start;
+//            log.info("Обновление блэклиста заняло {} сек.", took / 1000);
+//        } catch (Exception e) {
+//            log.error("Ошибка обновления блэклиста", e);
+//        }
     }
 
 }
