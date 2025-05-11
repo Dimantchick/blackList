@@ -17,5 +17,5 @@ spring:
     hibernate:
       ddl-auto: update
   application:
-    name: black-list-service
+    name: bl-service
 
