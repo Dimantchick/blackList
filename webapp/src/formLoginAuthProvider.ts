@@ -7,10 +7,13 @@ const USERNAME_KEY = 'amplicode-auth';
 
 const authProvider: AuthProvider = {
     login: async function (params: any): Promise<any> {
-        // sending request to authenticate user
-        const request: Request = new Request(LOGIN_URL, {
+        const formData = new URLSearchParams();
+        formData.append('username', params.username);
+        formData.append('password', params.password);
+
+        const request = new Request(LOGIN_URL, {
             method: "POST",
-            body: `username=${params.username}&password=${params.password}`,
+            body: formData,
             headers: new Headers({
                 "Content-Type": "application/x-www-form-urlencoded",
             }),
@@ -18,9 +21,7 @@ const authProvider: AuthProvider = {
         });
 
         const response = await fetch(request);
-
         if (response.status === 200) {
-            // storing username to indicate login
             localStorage.setItem(USERNAME_KEY, params.username);
         } else {
             throw new Error("Incorrect login or password");

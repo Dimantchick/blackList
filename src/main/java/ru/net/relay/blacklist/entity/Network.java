@@ -3,6 +3,8 @@ package ru.net.relay.blacklist.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -30,4 +32,9 @@ public class Network {
 
     @Builder.Default
     private Boolean imported = false;
+
+    @ToString.Exclude
+    @Column(name = "updated")
+    private LocalDateTime updated;
+
 }

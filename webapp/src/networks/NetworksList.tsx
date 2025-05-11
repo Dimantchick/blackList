@@ -37,6 +37,6 @@ export const NetworksList = () => {
 const CustomPagination = (props: PaginationProps) => (
   <>
     {/* CustomPagination component{" "} */}
-    <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} {...props} />
+    <Pagination rowsPerPageOptions={[10, 25, 50, 100, 200]} {...props} />
   </>
 )

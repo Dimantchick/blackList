@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.web.bind.annotation.*;
-import ru.net.relay.blacklist.dto.NetworkFilter;
-import ru.net.relay.blacklist.entity.Network;
 import ru.net.relay.blacklist.service.NetworkService;
+import ru.net.relay.blacklist.dto.NetworkDto;
+import ru.net.relay.blacklist.dto.NetworkFilter;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,28 +21,28 @@ public class NetworkResource {
     private final NetworkService networkService;
 
     @GetMapping
-    public PagedModel<Network> getAll(@ModelAttribute NetworkFilter filter, Pageable pageable) {
-        Page<Network> networks = networkService.getAll(filter, pageable);
-        return new PagedModel<>(networks);
+    public PagedModel<NetworkDto> getAll(@ModelAttribute NetworkFilter filter, Pageable pageable) {
+        Page<NetworkDto> networkDtos = networkService.getAll(filter, pageable);
+        return new PagedModel<>(networkDtos);
     }
 
     @GetMapping("/{id}")
-    public Network getOne(@PathVariable Long id) {
+    public NetworkDto getOne(@PathVariable Long id) {
         return networkService.getOne(id);
     }
 
     @GetMapping("/by-ids")
-    public List<Network> getMany(@RequestParam List<Long> ids) {
+    public List<NetworkDto> getMany(@RequestParam List<Long> ids) {
         return networkService.getMany(ids);
     }
 
     @PostMapping
-    public Network create(@RequestBody Network network) {
-        return networkService.create(network);
+    public NetworkDto create(@RequestBody NetworkDto dto) {
+        return networkService.create(dto);
     }
 
     @PatchMapping("/{id}")
-    public Network patch(@PathVariable Long id, @RequestBody JsonNode patchNode) throws IOException {
+    public NetworkDto patch(@PathVariable Long id, @RequestBody JsonNode patchNode) throws IOException {
         return networkService.patch(id, patchNode);
     }
 
@@ -52,7 +52,7 @@ public class NetworkResource {
     }
 
     @DeleteMapping("/{id}")
-    public Network delete(@PathVariable Long id) {
+    public NetworkDto delete(@PathVariable Long id) {
         return networkService.delete(id);
     }
 
