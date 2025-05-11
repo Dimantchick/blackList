@@ -1,9 +1,20 @@
-import { List, Datagrid, NumberField, TextField, BooleanField, EditButton, DeleteButton, PaginationProps, Pagination, TextInput, BooleanInput } from 'react-admin';
+import {
+    BooleanField,
+    BooleanInput,
+    Datagrid,
+    DateField,
+    List,
+    NumberField,
+    Pagination,
+    PaginationProps,
+    TextField,
+    TextInput
+} from 'react-admin';
 
 
 export const NetworksList = () => {
     return (
-        <List resource="networks" perPage={50} pagination={<CustomPagination />}filters={[<TextInput source="networkContains"/>,<BooleanInput source="manual"/>,<BooleanInput source="active"/>]} >
+        <List resource="networks" perPage={50} pagination={<CustomPagination />} filters={[<TextInput source="networkContains"/>,<BooleanInput source="manual"/>,<BooleanInput source="active"/>]} >
             <Datagrid
                 rowClick="edit"
                 
@@ -28,6 +39,9 @@ export const NetworksList = () => {
                 <BooleanField 
                 source="imported"
                 label="Имортированная"
+                />
+                <DateField
+                source='updated'
                 />
             </Datagrid>
         </List>

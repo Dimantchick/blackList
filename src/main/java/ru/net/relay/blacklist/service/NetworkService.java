@@ -52,6 +52,7 @@ public class NetworkService {
 
     public NetworkDto create(NetworkDto dto) {
         Network network = networkMapper.toEntity(dto);
+        network.setUpdated(LocalDateTime.now());
         Network resultNetwork = networkRepository.save(network);
         return networkMapper.toNetworkDto(resultNetwork);
     }
@@ -59,7 +60,7 @@ public class NetworkService {
     public NetworkDto patch(Long id, JsonNode patchNode) throws IOException {
         Network network = networkRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity with id `%s` not found".formatted(id)));
-
+        network.setUpdated(LocalDateTime.now());
         NetworkDto networkDto = networkMapper.toNetworkDto(network);
         objectMapper.readerForUpdating(networkDto).readValue(patchNode);
         networkMapper.updateWithNull(networkDto, network);
@@ -73,6 +74,7 @@ public class NetworkService {
 
         for (Network network : networks) {
             NetworkDto networkDto = networkMapper.toNetworkDto(network);
+            network.setUpdated(LocalDateTime.now());
             objectMapper.readerForUpdating(networkDto).readValue(patchNode);
             networkMapper.updateWithNull(networkDto, network);
         }
@@ -96,6 +98,7 @@ public class NetworkService {
     }
 
     public void save(Network network) {
+        network.setUpdated(LocalDateTime.now());
         networkRepository.save(network);
     }
 

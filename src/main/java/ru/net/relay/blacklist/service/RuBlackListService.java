@@ -28,16 +28,6 @@ public class RuBlackListService {
         List<Network> list = filteredList.stream()
                 .map(net -> Network.builder().network(net).manual(false).imported(true).updated(now).build()).toList();
         networkService.saveAllIgnoringDuplicates(list);
-//        for (String net : filteredList) {
-//            Network network = networkService.findByNet(net);
-//            if (network == null) {
-//                Network newNetwork = Network.builder()
-//                        .network(net)
-//                        .manual(false)
-//                        .imported(true).build();
-//                networkService.save(newNetwork);
-//            }
-//        }
     }
 
     /**

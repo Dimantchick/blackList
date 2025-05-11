@@ -4,7 +4,8 @@ import {
 
         TextInput,    
     
-        BooleanInput,    
+        BooleanInput,
+        DateInput,    
     
 
 
@@ -33,6 +34,10 @@ export const NetworksEdit = () => {
                 source="imported"
                 disabled
                 label="Имортированная"
+                />
+                <DateInput
+                source='updated'
+                disabled
                 />
             </SimpleForm>
         </Edit>

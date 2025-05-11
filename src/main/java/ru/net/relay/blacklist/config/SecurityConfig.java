@@ -48,7 +48,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html", "/assets/**", "/favicon.ico").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/rest/login", "/rest/logout").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
@@ -56,6 +55,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/rest/login")
+                        .successHandler((request, response, authentication) -> response.setStatus(200))
                         .failureHandler((request, response, exception) -> response.setStatus(401))
                         .permitAll()
                 )
@@ -68,7 +68,7 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/rest/login")
+                        .ignoringRequestMatchers("/rest/login", "/rest/logout", "/")
                 );
 
         return http.build();
