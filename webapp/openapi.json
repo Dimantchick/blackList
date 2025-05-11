@@ -224,6 +224,40 @@
         }
       }
     },
+    "/rest/nets": {
+      "get": {
+        "tags": [
+          "client-resource"
+        ],
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NetworkDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rest/networks": {
       "get": {
         "tags": [
@@ -496,26 +530,6 @@
           }
         }
       }
-    },
-    "/rest/test": {
-      "get": {
-        "tags": [
-          "test-resource"
-        ],
-        "operationId": "test",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -617,27 +631,6 @@
           }
         }
       },
-      "PageMetadata": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalElements": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "NetworkDto": {
         "type": "object",
         "properties": {
@@ -656,6 +649,31 @@
           },
           "imported": {
             "type": "boolean"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
