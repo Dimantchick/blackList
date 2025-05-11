@@ -9,7 +9,6 @@ import ru.net.relay.blacklist.entity.Network;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface NetworkRepository extends JpaRepository<Network, Long>, JpaSpecificationExecutor<Network> {
 

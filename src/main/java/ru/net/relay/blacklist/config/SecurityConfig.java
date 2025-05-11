@@ -7,12 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -58,16 +54,12 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/rest/login")
-                        .failureHandler((request, response, exception) -> {
-                            response.setStatus(401);
-                        })
+                        .failureHandler((request, response, exception) -> response.setStatus(401))
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/rest/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setStatus(200);
-                        })
+                        .logoutSuccessHandler((request, response, authentication) -> response.setStatus(200))
                         .deleteCookies("JSESSIONID")
                         .deleteCookies("SESSION")
                         .invalidateHttpSession(true)
