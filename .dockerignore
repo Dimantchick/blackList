@@ -1,0 +1,10 @@
+webapp/.gradle
+webapp/.vscode
+webapp/dist
+webapp/node_modules
+
+build
+.idea
+.gradle
+.github
+relayDB.mv.db
