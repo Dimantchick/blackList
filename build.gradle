@@ -58,8 +58,17 @@ tasks.register('npmBuild', NpmTask) {
 }
 
 tasks.register('copyFrontendToResources', Copy) {
+    // Очищаем целевую директорию перед копированием
+    doFirst {
+        delete "${project.projectDir}/src/main/resources/static"
+    }
+
     from "${project.projectDir}/webapp/dist"
     into "${project.projectDir}/src/main/resources/static"
+
+    doLast {
+        logger.lifecycle("Copied frontend files from ${project.projectDir}/webapp/dist to resources/static")
+    }
 }
 
 npmBuild.dependsOn npmInstall, installVite
