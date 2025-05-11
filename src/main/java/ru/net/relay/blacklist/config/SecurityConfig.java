@@ -1,5 +1,7 @@
 package ru.net.relay.blacklist.config;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -11,9 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import ru.net.relay.blacklist.filter.LoginRateLimiterFilter;
 
 import java.util.List;
 
@@ -21,7 +25,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final Cache<String, Integer> loginAttemptCache;
+    private final LoginRateLimiterFilter rateLimiterFilter;
 
     @Bean
     @Order(1)
@@ -42,6 +50,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain mainFilterChain(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(rateLimiterFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html", "/assets/**", "/favicon.ico").permitAll()
@@ -53,8 +62,18 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/rest/login")
-                        .successHandler((request, response, authentication) -> response.setStatus(200))
-                        .failureHandler((request, response, exception) -> response.setStatus(401))
+                        .successHandler((req, res, auth) -> {
+                            // Сброс счетчика при успешном входе
+                            loginAttemptCache.invalidate(req.getRemoteAddr());
+                            res.setStatus(HttpStatus.OK.value());
+                        })
+                        .failureHandler((req, res, ex) -> {
+                            // Увеличение счетчика при неудаче
+                            String ip = req.getRemoteAddr();
+                            int attempts = loginAttemptCache.get(ip, k -> 0) + 1;
+                            loginAttemptCache.put(ip, attempts);
+                            res.setStatus(HttpStatus.UNAUTHORIZED.value());
+                        })
                         .permitAll()
                 )
                 .logout(logout -> logout
