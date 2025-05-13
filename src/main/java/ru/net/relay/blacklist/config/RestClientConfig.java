@@ -9,8 +9,8 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
-    @Bean("ozonRestClient")
-    public RestClient getOzonRestClient() {
+    @Bean
+    public RestClient getRestClient() {
         HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory =
                 new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().disableContentCompression().build());
 

@@ -1,4 +1,4 @@
-import { Admin, Resource, mergeTranslations } from "react-admin";
+import {mergeTranslations} from "react-admin";
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 // Импортируем переводы для русского языка
@@ -12,6 +12,7 @@ const myRussianMessages = mergeTranslations(russianMessages, {
       fields: {
         id: 'Ид',
         network: 'Адрес/сеть',
+        comment: 'Комментарий',
         networkContains: 'Адрес содержит',
         manual: 'Ручной режим',
         active: 'Активна',

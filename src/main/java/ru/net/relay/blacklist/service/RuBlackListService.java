@@ -8,6 +8,7 @@ import org.springframework.web.client.RestClient;
 import ru.net.relay.blacklist.entity.Network;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Slf4j
@@ -23,7 +24,7 @@ public class RuBlackListService {
     public void updateBlackList() {
         List<String> filteredList = getFilteredList();
         log.info("Import {} filtered nets", filteredList.size());
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
         List<Network> list = filteredList.stream()
                 .map(net -> Network.builder().network(net).manual(false).imported(true).updated(now).build()).toList();
         networkService.saveAllIgnoringDuplicates(list);
