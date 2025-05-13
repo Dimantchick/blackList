@@ -29,7 +29,6 @@ export const NetworksCreate = () => {
                 <BooleanInput 
                 source="manual"
                 defaultValue={true}
-                disabled
                 label="Добавлена вручную"
                 />
                 <BooleanInput 
