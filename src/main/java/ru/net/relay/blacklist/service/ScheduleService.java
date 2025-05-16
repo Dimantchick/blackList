@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ScheduleService {
 
-    private final RuBlackListService ruBlackListService;
+    private final GoogleService googleService;
 
     private final SummarizeNetworksService summarizeNetworksService;
 
@@ -24,19 +24,19 @@ public class ScheduleService {
 
     @Scheduled(cron = "0 0 * * * *")
     public void updateBlackList() {
-//        try {
-//            long start = System.currentTimeMillis();
-//            log.info("Обновление блэклиста");
-//            ruBlackListService.updateBlackList();
-//            long took = System.currentTimeMillis() - start;
-//            log.info("Обновление блэклиста заняло {} сек.", took / 1000);
-//        } catch (Exception e) {
-//            log.error("Ошибка обновления блэклиста", e);
-//        }
+        try {
+            long start = System.currentTimeMillis();
+            log.info("Обновление блэклиста гугла");
+            googleService.updateGoogleBlackList();
+            long took = System.currentTimeMillis() - start;
+            log.info("Обновление блэклиста гугла заняло {} сек.", took / 1000);
+        } catch (Exception e) {
+            log.error("Ошибка обновления блэклиста гугла", e);
+        }
     }
 
-    @Scheduled(fixedRate = 30000)
-    public void updateNetworkNormalization() {
+    @Scheduled(cron = "0 */10 * * * *")
+    public void mergeNetworks() {
         summarizeNetworksService.summarizeNetworks();
     }
 

@@ -15,8 +15,8 @@ public interface NetworkRepository extends JpaRepository<Network, Long>, JpaSpec
     Network findByNetwork(String network);
 
     @Modifying
-    @Query(value = "INSERT INTO network (id, network, manual, active, imported, updated) " +
-            "SELECT  nextval('network_sequence'), :#{#entity.network}, :#{#entity.manual}, :#{#entity.active}, :#{#entity.imported} , :#{#entity.updated} " +
+    @Query(value = "INSERT INTO network (id, network, manual, active, imported, updated, comment) " +
+            "SELECT  nextval('network_sequence'), :#{#entity.network}, :#{#entity.manual}, :#{#entity.active}, :#{#entity.imported} , :#{#entity.updated} , :#{#entity.comment} " +
             "WHERE NOT EXISTS (SELECT 1 FROM network WHERE network = :#{#entity.network})", nativeQuery = true)
     void insertIgnoreDuplicate(@Param("entity") Network entity);
 

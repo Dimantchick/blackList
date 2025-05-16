@@ -5,33 +5,43 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
+import ru.net.relay.blacklist.dto.GoogleApiDto;
+import ru.net.relay.blacklist.dto.GoogleApiEntryDto;
 import ru.net.relay.blacklist.entity.Network;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
-public class RuBlackListService {
+public class GoogleService {
 
     private final NetworkService networkService;
 
     private final RestClient restClient;
 
-    public RuBlackListService(NetworkService networkService,
-                              @Qualifier("antifilter.download") RestClient restClient) {
+    public GoogleService(NetworkService networkService,
+                         @Qualifier("google") RestClient restClient) {
         this.networkService = networkService;
         this.restClient = restClient;
     }
 
     @Transactional
-    public void updateBlackList() {
+    public void updateGoogleBlackList() {
         List<String> filteredList = getFilteredList();
         log.info("Import {} filtered nets", filteredList.size());
         LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
         List<Network> list = filteredList.stream()
-                .map(net -> Network.builder().network(net).manual(false).imported(true).updated(now).build()).toList();
+                .map(net -> Network.builder()
+                        .network(net)
+                        .manual(false)
+                        .imported(true)
+                        .updated(now)
+                        .comment("Google network import")
+                        .build())
+                .toList();
         networkService.saveAllIgnoringDuplicates(list);
     }
 
@@ -41,10 +51,11 @@ public class RuBlackListService {
      * @return
      */
     public List<String> getFilteredList() {
-        return retrieveBlacklist().stream().filter(net -> !net.contains(":")).toList();
+        return retrieveGoogleList().getPrefixes().stream().map(GoogleApiEntryDto::getIpv4Prefix).filter(Objects::nonNull).toList();
     }
 
-    public List<String> retrieveBlacklist() {
-        return List.of(restClient.get().uri("/list/allyouneed.lst").retrieve().body(String.class).split("\n"));
+    public GoogleApiDto retrieveGoogleList() {
+        return restClient.get().uri("/ipranges/goog.json").retrieve().body(GoogleApiDto.class);
     }
+
 }
