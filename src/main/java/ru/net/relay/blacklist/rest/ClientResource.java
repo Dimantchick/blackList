@@ -21,14 +21,14 @@ public class ClientResource {
     @GetMapping
     public List<NetworkDto> get(@RequestParam(name = "from", required = false) LocalDateTime from) {
         if (from == null) {
-            return networkService.getAllActive();
+            return networkService.getAllActiveDto();
         }
         return networkService.getAllActiveFromTime(from);
     }
 
     @GetMapping("/all")
     public List<NetworkDto> getAll() {
-        return networkService.getAllActive();
+        return networkService.getAllActiveDto();
     }
 
     @GetMapping("/updateTime")

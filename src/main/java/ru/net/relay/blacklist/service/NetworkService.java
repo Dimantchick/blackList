@@ -111,7 +111,7 @@ public class NetworkService {
         networkRepository.saveAllIgnoringDuplicates(networks);
     }
 
-    public List<NetworkDto> getAllActive() {
+    public List<NetworkDto> getAllActiveDto() {
         List<Network> all = networkRepository.findAllByActive(true);
         return networkMapper.toNetworkDtoList(all);
     }
@@ -124,5 +124,17 @@ public class NetworkService {
     public LocalDateTime getLastUpdate() {
         Network lastUpdated = networkRepository.findTopByOrderByUpdatedDesc();
         return lastUpdated != null ? lastUpdated.getUpdated() : LocalDateTime.of(1970, 1,1,0,0);
+    }
+
+    public List<Network> getAllActive() {
+        return networkRepository.findAllByActive(true);
+    }
+
+    public void saveAll(List<Network> networks) {
+        networkRepository.saveAll(networks);
+    }
+
+    public void flush() {
+        networkRepository.flush();
     }
 }

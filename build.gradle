@@ -26,6 +26,8 @@ dependencies {
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.4'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
+
+    implementation 'com.github.seancfoley:ipaddress:5.5.1'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
     compileOnly 'org.projectlombok:lombok'

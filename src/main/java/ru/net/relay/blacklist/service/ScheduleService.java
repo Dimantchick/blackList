@@ -14,6 +14,8 @@ public class ScheduleService {
 
     private final RuBlackListService ruBlackListService;
 
+    private final SummarizeNetworksService summarizeNetworksService;
+
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         log.info("Обновление блэклиста на старте");
@@ -31,6 +33,11 @@ public class ScheduleService {
 //        } catch (Exception e) {
 //            log.error("Ошибка обновления блэклиста", e);
 //        }
+    }
+
+    @Scheduled(fixedRate = 30000)
+    public void updateNetworkNormalization() {
+        summarizeNetworksService.summarizeNetworks();
     }
 
 }
