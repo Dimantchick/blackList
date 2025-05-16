@@ -35,7 +35,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain basicAuthFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/rest/nets")
+                .securityMatcher("/rest/nets", "/rest/nets/**")
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .httpBasic(withDefaults())
                 .exceptionHandling(exception -> exception
