@@ -25,4 +25,14 @@ public class ClientResource {
         }
         return networkService.getAllActiveFromTime(from);
     }
+
+    @GetMapping("/all")
+    public List<NetworkDto> getAll() {
+        return networkService.getAllActive();
+    }
+
+    @GetMapping("/updateTime")
+    public LocalDateTime get() {
+        return networkService.getLastUpdate();
+    }
 }

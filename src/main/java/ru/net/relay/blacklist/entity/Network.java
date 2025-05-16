@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @NoArgsConstructor
-@Table(indexes = @Index(name = "idx_network", columnList = "network"))
+@Table(indexes = {
+        @Index(name = "idx_network", columnList = "network")
+})
 @Builder
 @AllArgsConstructor
 public class Network {
@@ -21,7 +23,7 @@ public class Network {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(length = 20, unique = true, nullable = false)
+    @Column(length = 50, unique = true, nullable = false) // Увеличил длину для IPv6
     private String network;
 
     @Builder.Default
@@ -40,5 +42,4 @@ public class Network {
     @ToString.Exclude
     @Column(name = "updated")
     private LocalDateTime updated;
-
 }

@@ -8,7 +8,7 @@ import russianMessages from 'ra-language-russian';
 const myRussianMessages = mergeTranslations(russianMessages, {
   resources: {
     networks: {
-      name: 'Сети',
+      name: 'Сети VPN',
       fields: {
         id: 'Ид',
         network: 'Адрес/сеть',

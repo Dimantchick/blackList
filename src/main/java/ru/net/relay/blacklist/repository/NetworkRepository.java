@@ -27,4 +27,7 @@ public interface NetworkRepository extends JpaRepository<Network, Long>, JpaSpec
     List<Network> findAllByActive(boolean active);
 
     List<Network> findAllByActiveAndUpdatedAfter(boolean active, LocalDateTime from);
+
+    Network findTopByOrderByUpdatedDesc();
+
 }

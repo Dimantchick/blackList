@@ -120,4 +120,9 @@ public class NetworkService {
         List<Network> all = networkRepository.findAllByActiveAndUpdatedAfter(true, from);
         return networkMapper.toNetworkDtoList(all);
     }
+
+    public LocalDateTime getLastUpdate() {
+        Network lastUpdated = networkRepository.findTopByOrderByUpdatedDesc();
+        return lastUpdated != null ? lastUpdated.getUpdated() : LocalDateTime.of(1970, 1,1,0,0);
+    }
 }
