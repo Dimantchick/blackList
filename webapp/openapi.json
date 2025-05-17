@@ -258,12 +258,56 @@
         }
       }
     },
+    "/rest/nets/all": {
+      "get": {
+        "tags": [
+          "client-resource"
+        ],
+        "operationId": "getAll_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NetworkDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/nets/updateTime": {
+      "get": {
+        "tags": [
+          "client-resource"
+        ],
+        "operationId": "get_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rest/networks": {
       "get": {
         "tags": [
           "network-resource"
         ],
-        "operationId": "getAll_1",
+        "operationId": "getAll_2",
         "parameters": [
           {
             "name": "filter",
@@ -530,6 +574,39 @@
           }
         }
       }
+    },
+    "/rest/resolve": {
+      "get": {
+        "tags": [
+          "resolve-resource"
+        ],
+        "operationId": "get_2",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -653,6 +730,9 @@
           "updated": {
             "type": "string",
             "format": "date-time"
+          },
+          "comment": {
+            "type": "string"
           }
         }
       },

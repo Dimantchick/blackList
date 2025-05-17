@@ -25,5 +25,16 @@ export default ({ mode }) => {
         src: '/src'
       }
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ["react", "react-dom", "react-router-dom"],
+            ra: ["react-admin"],
+          },
+        },
+      },
+      chunkSizeWarningLimit: 500,
+    },
   });
 };

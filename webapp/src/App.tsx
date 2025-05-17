@@ -1,4 +1,4 @@
-import {Admin, Resource} from "react-admin";
+import {Admin, CustomRoutes, Resource} from "react-admin";
 import {amplicodeDarkTheme, amplicodeLightTheme,} from "./themes/amplicodeTheme/amplicodeTheme";
 import {dataProvider} from "./dataProvider";
 import {NetworksList} from "./networks/NetworksList";
@@ -9,6 +9,8 @@ import {i18nProvider} from "./i18nProvider";
 import {UsersList} from "./users/UsersList";
 import {UsersEdit} from "./users/UsersEdit";
 import {UsersCreate} from "./users/UsersCreate";
+import {ResolveDomain} from "./resolve/ResolveDomain";
+import { Route } from 'react-router-dom';
 
 export const App = () => {
   return (
@@ -20,7 +22,9 @@ export const App = () => {
       i18nProvider={i18nProvider}
       disableTelemetry={true}
     >
-    
+    <CustomRoutes>
+            <Route path="/resolve" element={<ResolveDomain />} />
+        </CustomRoutes>
 <Resource
           name="networks"
 

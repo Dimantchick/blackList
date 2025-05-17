@@ -43,3 +43,4 @@ bin/
 /relayDB.mv.db
 /src/main/resources/static/
 /relayDB.trace.db
+/remote

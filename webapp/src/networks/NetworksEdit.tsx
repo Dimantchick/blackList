@@ -8,6 +8,7 @@ export const NetworksEdit = () => {
             >
                 <TextInput 
                 source="network"
+                disabled
                 required
                 label="Адрес/Сеть"
                 />

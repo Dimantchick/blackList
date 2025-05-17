@@ -123,7 +123,7 @@ public class NetworkService {
 
     public LocalDateTime getLastUpdate() {
         Network lastUpdated = networkRepository.findTopByOrderByUpdatedDesc();
-        return lastUpdated != null ? lastUpdated.getUpdated() : LocalDateTime.of(1970, 1,1,0,0);
+        return lastUpdated != null ? lastUpdated.getUpdated() : LocalDateTime.of(1970, 1, 1, 0, 0);
     }
 
     public List<Network> getAllActive() {
