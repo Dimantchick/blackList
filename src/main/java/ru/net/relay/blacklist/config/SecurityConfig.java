@@ -91,7 +91,10 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080", "https://bl.relay.net.ru"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000",
+                "http://localhost:8080",
+                "https://bl.relay.net.ru",
+                "https://bl.relay.net.ru"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
