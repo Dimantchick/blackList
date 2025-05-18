@@ -2,6 +2,8 @@ package ru.net.relay.blacklist.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import ru.net.relay.blacklist.dto.AdminUserDto;
 import ru.net.relay.blacklist.service.UserService;
@@ -49,5 +51,12 @@ public class AdminUserResource {
     @DeleteMapping
     public void deleteMany(@RequestParam List<Long> ids) {
         userService.deleteMany(ids);
+    }
+
+    @GetMapping("/info")
+    public AdminUserDto info(Authentication authentication) {
+        User principal = (User) authentication.getPrincipal();
+        String username = principal.getUsername();
+        return userService.getByUsername(username);
     }
 }

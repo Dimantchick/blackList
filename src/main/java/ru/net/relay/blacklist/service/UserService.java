@@ -89,6 +89,11 @@ public class UserService implements UserDetailsService {
         adminUserRepository.deleteAllById(ids);
     }
 
+    public AdminUserDto getByUsername(String username) {
+        AdminUser adminUser = adminUserRepository.findByUsernameIgnoreCase(username);
+        return userMapper.toAdminUserDto(adminUser);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AdminUser user = adminUserRepository.findByUsernameIgnoreCase(username);

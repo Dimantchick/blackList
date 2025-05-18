@@ -1,50 +1,59 @@
 import * as React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
+import {Title, useDataProvider, useNotify,} from 'react-admin';
 import {
-    useDataProvider,
-    useNotify,
-    Title,
-} from 'react-admin';
-import { 
-    TextField as MuiTextField,
+    Box,
+    Button as MuiButton,
     List,
     ListItem,
     ListItemText,
     Paper,
-    Box,
-    Button as MuiButton,
-    useMediaQuery,
+    TextField as MuiTextField,
     Theme,
+    Typography,
+    useMediaQuery,
 } from '@mui/material';
-import { CustomDataProvider } from 'src/dataProvider';
+import {CustomDataProvider} from 'src/dataProvider';
 
 export const ResolveDomain = () => {
     const [domain, setDomain] = useState('');
     const [addresses, setAddresses] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
-    const [isPressed, setIsPressed] = useState(false); // Добавляем состояние для анимации
+    const [isPressed, setIsPressed] = useState(false);
     const dataProvider = useDataProvider<CustomDataProvider>();
     const notify = useNotify();
     const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
+    const normalizeDomain = (input: string): string => {
+        try {
+            let normalized = input.replace(/^https?:\/\//i, '');
+            normalized = normalized.split('/')[0];
+            normalized = normalized.split(':')[0];
+            return normalized.trim();
+        } catch {
+            return input.trim();
+        }
+    };
+
     const handleResolve = () => {
-        if (!domain) {
-            notify('Please enter a domain', { type: 'warning' });
+        const normalizedDomain = normalizeDomain(domain);
+        if (!normalizedDomain) {
+            notify('Пожалуйста, введите домен', {type: 'warning'});
             return;
         }
-
+        setDomain(normalizedDomain);
         setLoading(true);
-        dataProvider.customGet('resolve', { domain })
-            .then(({ data }) => {
+        dataProvider.customGet('resolve', {domain: normalizedDomain})
+            .then(({data}) => {
                 if (Array.isArray(data)) {
                     setAddresses(data);
                 } else {
-                    notify('Invalid response format', { type: 'error' });
+                    notify('Неверный формат ответа', {type: 'error'});
                     setAddresses([]);
                 }
             })
             .catch(error => {
-                notify(`Error: ${error.message}`, { type: 'error' });
+                notify(`Ошибка: ${error.message}`, {type: 'error'});
                 setAddresses([]);
             })
             .finally(() => setLoading(false));
@@ -59,20 +68,28 @@ export const ResolveDomain = () => {
     };
 
     return (
-        <Box sx={{ maxWidth: 600, margin: '0 auto', p: isSmallScreen ? 1 : 3 }}>
-            <Title title="Resolve Domain" />
-            <Paper sx={{ p: isSmallScreen ? 2 : 3, mb: 3 }}>
-                <Box 
-                    sx={{ 
-                        display: 'flex', 
+        <Box sx={{width: '100%', margin: '0 auto', p: 0}}>
+            <Title title="IP Домена"/>
+            <Paper sx={{width: '100%', p: isSmallScreen ? 2 : 3, mb: 3}}>
+                <Box sx={{
+                    padding: '16px',
+                    backgroundColor: 'transparent'
+                }}>
+                    <Typography variant="body2">
+                        Получить IP адреса по домену.
+                    </Typography>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
                         alignItems: 'flex-end',
-                        gap: 2, 
+                        gap: 2,
                         mb: 3,
                         flexDirection: isSmallScreen ? 'column' : 'row'
                     }}
                 >
                     <MuiTextField
-                        label="Domain"
+                        label="Домен"
                         value={domain}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDomain(e.target.value)}
                         onKeyPress={handleKeyPress}
@@ -80,6 +97,7 @@ export const ResolveDomain = () => {
                         variant="outlined"
                         size="small"
                         fullWidth
+                        placeholder="например: rutracker.org или https://google.com"
                     />
                     <MuiButton
                         variant="contained"
@@ -98,16 +116,27 @@ export const ResolveDomain = () => {
                             transition: 'transform 0.1s ease',
                         }}
                     >
-                        Resolve
+                        Получить
                     </MuiButton>
                 </Box>
 
                 {addresses.length > 0 && (
-                    <Paper variant="outlined">
+                    <Paper variant="outlined" sx={{marginTop: 2}}>
+                        <Typography
+                            variant="subtitle1"
+                            component="div"
+                            sx={{
+                                padding: '8px 16px',
+                                backgroundColor: (theme) => theme.palette.grey[100],
+                                borderBottom: (theme) => `1px solid ${theme.palette.divider}`
+                            }}
+                        >
+                            Распознанные адреса
+                        </Typography>
                         <List dense>
                             {addresses.map((address, index) => (
                                 <ListItem key={index}>
-                                    <ListItemText primary={address} />
+                                    <ListItemText primary={address}/>
                                 </ListItem>
                             ))}
                         </List>

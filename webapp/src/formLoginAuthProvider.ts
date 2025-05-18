@@ -1,6 +1,7 @@
-import { AuthProvider, UserIdentity } from "react-admin";
+import {AuthProvider, UserIdentity} from "react-admin";
 
 const LOGIN_URL = import.meta.env.VITE_LOGIN_URL as string;
+const USER_URL = '/rest/users/info';
 const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL as string;
 
 const USERNAME_KEY = 'amplicode-auth';
@@ -44,14 +45,33 @@ const authProvider: AuthProvider = {
             return Promise.reject();
         }
     },
-    getPermissions: function (): Promise<any> {
-        // configure your custom permissions obtaining
-        throw new Error("Function not implemented.");
+    getPermissions: (): Promise<string[]> => {
+        // Для системы без RBAC возвращаем массив с "общим" разрешением
+        return Promise.resolve(['all']);
     },
 
-    getIdentity: async function (): Promise<UserIdentity> {
-        // configure your custom user identity obtaining
-        throw new Error("Function not implemented.");
+    getIdentity: async (): Promise<UserIdentity> => {
+        try {
+            const request = new Request(USER_URL, {
+                method: "GET",
+                credentials: "include",
+            });
+            const response = await fetch(request);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const userData = await response.json();
+            return {
+                id: userData.id.toString(),
+                fullName: userData.username,
+            };
+        } catch (error) {
+            console.error('Failed to fetch user identity:', error);
+            return {
+                id: 'anonymous',
+                fullName: 'Anonymous',
+            };
+        }
     }
 };
 

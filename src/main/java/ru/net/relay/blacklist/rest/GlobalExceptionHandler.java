@@ -17,6 +17,6 @@ public class GlobalExceptionHandler {
                     .status(HttpStatus.CONFLICT)
                     .body("Network with this unique field already exists");
         }
-        return ResponseEntity.internalServerError().body("Database error");
+        throw ex;
     }
 }

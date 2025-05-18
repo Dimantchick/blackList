@@ -1,4 +1,4 @@
-import {Admin, CustomRoutes, Resource} from "react-admin";
+import {Admin, Resource} from "react-admin";
 import {amplicodeDarkTheme, amplicodeLightTheme,} from "./themes/amplicodeTheme/amplicodeTheme";
 import {dataProvider} from "./dataProvider";
 import {NetworksList} from "./networks/NetworksList";
@@ -10,35 +10,43 @@ import {UsersList} from "./users/UsersList";
 import {UsersEdit} from "./users/UsersEdit";
 import {UsersCreate} from "./users/UsersCreate";
 import {ResolveDomain} from "./resolve/ResolveDomain";
-import { Route } from 'react-router-dom';
+import {DomainsList} from "./domains/DomainsList";
+import {DomainsEdit} from "./domains/DomainsEdit";
+import {DomainsCreate} from "./domains/DomainsCreate";
 
 export const App = () => {
-  return (
-    <Admin
-      authProvider={authProvider}
-      dataProvider={dataProvider}
-      lightTheme={amplicodeLightTheme}
-      darkTheme={amplicodeDarkTheme} requireAuth={true}
-      i18nProvider={i18nProvider}
-      disableTelemetry={true}
-    >
-    <CustomRoutes>
-            <Route path="/resolve" element={<ResolveDomain />} />
-        </CustomRoutes>
-<Resource
-          name="networks"
+    return (
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            lightTheme={amplicodeLightTheme}
+            darkTheme={amplicodeDarkTheme} requireAuth={true}
+            i18nProvider={i18nProvider}
+            disableTelemetry={true}
+        >
+            <Resource name="domains"
+                      edit={DomainsEdit} list={DomainsList}
+                      recordRepresentation="domain"
+                      create={DomainsCreate}
 
-list={NetworksList}
-create={NetworksCreate}
-edit={NetworksEdit}
-        />
+            />
+            <Resource
+                name="networks"
 
-    <Resource name="users" 
-        edit={UsersEdit} list={UsersList}
-        
-        recordRepresentation="username"
-create={UsersCreate}
-      />
-</Admin>
-  )
+                list={NetworksList}
+                create={NetworksCreate}
+                edit={NetworksEdit}
+            />
+
+            <Resource name="resolve" list={<ResolveDomain/>}/>
+
+            <Resource name="users"
+                      edit={UsersEdit} list={UsersList}
+
+                      recordRepresentation="username"
+                      create={UsersCreate}
+            />
+
+        </Admin>
+    )
 };

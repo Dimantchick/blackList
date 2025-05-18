@@ -224,6 +224,36 @@
         }
       }
     },
+    "/rest/users/info": {
+      "get": {
+        "tags": [
+          "admin-user-resource"
+        ],
+        "operationId": "info",
+        "parameters": [
+          {
+            "name": "authentication",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Authentication"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rest/nets": {
       "get": {
         "tags": [
@@ -607,6 +637,272 @@
           }
         }
       }
+    },
+    "/rest/domains": {
+      "get": {
+        "tags": [
+          "vpn-domain-resource"
+        ],
+        "operationId": "getAll_3",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/VPNDomainFilter"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelVPNDomainDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "vpn-domain-resource"
+        ],
+        "operationId": "create_2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VPNDomainDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VPNDomainDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "vpn-domain-resource"
+        ],
+        "operationId": "patchMany_1",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "vpn-domain-resource"
+        ],
+        "operationId": "deleteMany_2",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/rest/domains/{id}": {
+      "get": {
+        "tags": [
+          "vpn-domain-resource"
+        ],
+        "operationId": "getOne_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VPNDomainDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "vpn-domain-resource"
+        ],
+        "operationId": "patch_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VPNDomainDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "vpn-domain-resource"
+        ],
+        "operationId": "delete_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VPNDomainDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/domains/by-ids": {
+      "get": {
+        "tags": [
+          "vpn-domain-resource"
+        ],
+        "operationId": "getMany_2",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VPNDomainDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -708,6 +1004,36 @@
           }
         }
       },
+      "Object": {
+        "type": "object",
+        "properties": {}
+      },
+      "Authentication": {
+        "type": "object",
+        "properties": {
+          "principal": {
+            "$ref": "#/components/schemas/Object"
+          },
+          "authenticated": {
+            "type": "boolean"
+          },
+          "credentials": {
+            "$ref": "#/components/schemas/Object"
+          },
+          "name": {
+            "type": "string"
+          },
+          "details": {
+            "$ref": "#/components/schemas/Object"
+          },
+          "authorities": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
       "NetworkDto": {
         "type": "object",
         "properties": {
@@ -801,6 +1127,46 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "VPNDomainDto": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PagedModelVPNDomainDto": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VPNDomainDto"
+            }
+          }
+        }
+      },
+      "VPNDomainFilter": {
+        "type": "object",
+        "properties": {
+          "domainContains": {
+            "type": "string"
+          },
+          "commentContains": {
+            "type": "string"
           }
         }
       }

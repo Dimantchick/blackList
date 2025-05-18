@@ -18,6 +18,5 @@ public class ResolveService {
         HostName hostName = new HostName(name);
 
         return Arrays.stream(hostName.toAllAddresses()).map(IPAddress::toCanonicalString).toList();
-
     }
 }

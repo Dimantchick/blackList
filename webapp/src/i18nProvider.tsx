@@ -1,14 +1,11 @@
 import {mergeTranslations} from "react-admin";
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-
-// Импортируем переводы для русского языка
 import russianMessages from 'ra-language-russian';
 
-// Кастомные переводы для вашего приложения
 const myRussianMessages = mergeTranslations(russianMessages, {
   resources: {
     networks: {
-      name: 'Сети VPN',
+      name: 'Маршруты',
       fields: {
         id: 'Ид',
         network: 'Адрес/сеть',
@@ -24,6 +21,26 @@ const myRussianMessages = mergeTranslations(russianMessages, {
             id: 'Ид',
             username: 'Имя',
             password: 'Пароль',
+        }
+    },
+    domains: {
+        name: 'Домены',
+        fields: {
+            id: 'Ид',
+            domain: 'Домен',
+            comment: 'Комментарий',
+            domainContains: 'Домен содержит',
+            commentContains: 'Комментарий содержит',
+        }
+    },
+    resolve: {
+        name: 'IP домена',
+        fields: {
+            resolve: 'Ид',
+            domain: 'Домен',
+            comment: 'Комментарий',
+            domainContains: 'Домен содержит',
+            commentContains: 'Комментарий содержит',
         }
     }
   },
@@ -42,5 +59,4 @@ const myRussianMessages = mergeTranslations(russianMessages, {
   },
 });
 
-// Создаем провайдер локализации
 export const i18nProvider = polyglotI18nProvider(() => myRussianMessages, 'ru');
