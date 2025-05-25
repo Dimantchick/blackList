@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.net.relay.blacklist.dto.NetworkDto;
 import ru.net.relay.blacklist.service.NetworkService;
+import ru.net.relay.blacklist.service.ParamsService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 public class ClientResource {
 
     private final NetworkService networkService;
+
+    private final ParamsService paramsService;
 
     @GetMapping
     public List<NetworkDto> get(@RequestParam(name = "from", required = false) LocalDateTime from) {
@@ -33,6 +36,6 @@ public class ClientResource {
 
     @GetMapping("/updateTime")
     public LocalDateTime get() {
-        return networkService.getLastUpdate();
+        return paramsService.getParamLocalDateTime("last_network_change");
     }
 }

@@ -32,6 +32,8 @@ public class NetworkService {
 
     private final ObjectMapper objectMapper;
 
+    private final ParamsService paramsService;
+
     public Page<NetworkDto> getAll(NetworkFilter filter, Pageable pageable) {
         Specification<Network> spec = filter.toSpecification();
         Page<Network> networks = networkRepository.findAll(spec, pageable);
@@ -55,6 +57,7 @@ public class NetworkService {
         Network network = networkMapper.toEntity(dto);
         network.setUpdated(LocalDateTime.now(ZoneOffset.UTC));
         Network resultNetwork = networkRepository.save(network);
+        setUpdatedDate();
         return networkMapper.toNetworkDto(resultNetwork);
     }
 
@@ -67,6 +70,7 @@ public class NetworkService {
         networkMapper.updateWithNull(networkDto, network);
 
         Network resultNetwork = networkRepository.save(network);
+        setUpdatedDate();
         return networkMapper.toNetworkDto(resultNetwork);
     }
 
@@ -81,6 +85,7 @@ public class NetworkService {
         }
 
         List<Network> resultNetworks = networkRepository.saveAll(networks);
+        setUpdatedDate();
         return resultNetworks.stream()
                 .map(Network::getId)
                 .toList();
@@ -90,17 +95,20 @@ public class NetworkService {
         Network network = networkRepository.findById(id).orElse(null);
         if (network != null) {
             networkRepository.delete(network);
+            setUpdatedDate();
         }
         return networkMapper.toNetworkDto(network);
     }
 
     public void deleteMany(List<Long> ids) {
         networkRepository.deleteAllById(ids);
+        setUpdatedDate();
     }
 
     public void save(Network network) {
         network.setUpdated(LocalDateTime.now(ZoneOffset.UTC));
         networkRepository.save(network);
+        setUpdatedDate();
     }
 
     public Network findByNet(String net) {
@@ -109,6 +117,7 @@ public class NetworkService {
 
     public void saveAllIgnoringDuplicates(List<Network> networks) {
         networkRepository.saveAllIgnoringDuplicates(networks);
+        setUpdatedDate();
     }
 
     public List<NetworkDto> getAllActiveDto() {
@@ -132,9 +141,14 @@ public class NetworkService {
 
     public void saveAll(List<Network> networks) {
         networkRepository.saveAll(networks);
+        setUpdatedDate();
     }
 
     public void flush() {
         networkRepository.flush();
+    }
+
+    private void setUpdatedDate() {
+        paramsService.setParamValue("blacklist_update_date", LocalDateTime.now(ZoneOffset.UTC).toString());
     }
 }
