@@ -36,6 +36,6 @@ public class ClientResource {
 
     @GetMapping("/updateTime")
     public LocalDateTime get() {
-        return paramsService.getParamLocalDateTime("last_network_change");
+        return paramsService.getParamLocalDateTime("blacklist_update_date");
     }
 }
