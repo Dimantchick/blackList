@@ -26,4 +26,11 @@ public class RestClientConfig {
                 .baseUrl("https://www.gstatic.com/")
                 .build();
     }
+
+    @Bean("bgpview")
+    public RestClient getBgpviewRestClient() {
+        return RestClient.builder()
+                .baseUrl("https://api.bgpview.io")
+                .build();
+    }
 }

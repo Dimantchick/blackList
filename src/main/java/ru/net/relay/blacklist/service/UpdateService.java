@@ -29,10 +29,12 @@ public class UpdateService {
     private final VPNDomainService vpnDomainService;
 
     private final NetworkService networkService;
+    private final MetaService metaService;
 
     @Transactional
     public void updateNetworks() {
         googleService.updateGoogleBlackList();
+        metaService.updateMetaBlackList();
 
         List<VPNDomain> all = vpnDomainService.getAll();
         Map<String, String> ipToDomainMap = resolveDomainsToIps(all);
