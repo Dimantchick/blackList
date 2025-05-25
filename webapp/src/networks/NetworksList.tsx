@@ -5,6 +5,7 @@ import {
     Datagrid,
     List,
     NumberField,
+    DateField,
     Pagination,
     PaginationProps,
     TextField,
@@ -54,8 +55,11 @@ export const NetworksList = () => {
                     source="imported"
                     label="Имортированная"
                 />
-                <TextField
-                    source='updated'
+                <DateField
+                    showDate={true}
+                    showTime={true}
+                    source="updated"
+
                 />
             </Datagrid>
         </List>
