@@ -61,7 +61,7 @@ public class SummarizeNetworksService {
 
         networkService.deleteMany(toDelete);
         networkService.flush();
-        networkService.saveAll(toAdd);
+        networkService.saveAllIgnoringDuplicates(toAdd);
     }
 
     private void removeDuplicates(Map<IPAddress, List<Network>> networkMap, int size) {
@@ -82,7 +82,7 @@ public class SummarizeNetworksService {
 
         networkService.deleteMany(toDelete);
         networkService.flush();
-        networkService.saveAll(toAdd);
+        networkService.saveAllIgnoringDuplicates(toAdd);
     }
 
     private void processAddresses(IPAddress[] addresses, Map<IPAddress, List<Network>> networkMap,
