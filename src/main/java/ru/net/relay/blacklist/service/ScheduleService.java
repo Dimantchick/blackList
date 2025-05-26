@@ -22,7 +22,7 @@ public class ScheduleService {
         updateBlackList();
     }
 
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void updateBlackList() {
         try {
             long start = System.currentTimeMillis();
@@ -35,7 +35,7 @@ public class ScheduleService {
         }
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     public void mergeNetworks() {
         log.info("Merging networks");
         summarizeNetworksService.summarizeSingleIps();
