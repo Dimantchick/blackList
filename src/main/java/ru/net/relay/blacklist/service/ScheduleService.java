@@ -33,13 +33,16 @@ public class ScheduleService {
         } catch (Exception e) {
             log.error("Ошибка обновления маршрутов", e);
         }
-    }
-
-    @Scheduled(cron = "0 */5 * * * *")
-    public void mergeNetworks() {
         log.info("Merging networks");
         summarizeNetworksService.summarizeSingleIps();
         summarizeNetworksService.summarizeNetworks();
     }
+
+    //@Scheduled(cron = "0 */5 * * * *")
+//    public void mergeNetworks() {
+//        log.info("Merging networks");
+//        summarizeNetworksService.summarizeSingleIps();
+//        summarizeNetworksService.summarizeNetworks();
+//    }
 
 }
